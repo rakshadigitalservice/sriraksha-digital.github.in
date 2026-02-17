@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sri Raksha Digital Service | At Your Doorstep</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+
+    <style>
+        /* --- GLOBAL VARIABLES --- */
+        :root {
+            --primary-dark: #0f172a;
+            --primary-main: #334155;
+            --brand-blue: #3b82f6;
+            --brand-green: #25D366;
+            --brand-green-hover: #128c7e;
+            --bg-gradient-1: #f8fafc;
+            --bg-gradient-2: #e2e8f0;
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --glass-border: rgba(255, 255, 255, 0.6);
+            --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+            --blur-strength: 12px;
+            --container-width: 1280px;
+            --card-radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* --- RESET & BASE --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; scroll-behavior: smooth; cursor: default; }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, var(--bg-gradient-1), var(--bg-gradient-2));
+            color: var(--primary-main);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Interactive Click Cursor Override */
+        a, button, .wa-btn { cursor: pointer; }
+
+        h1, h2, h3, h4, h5 { font-family: 'Poppins', sans-serif; color: var(--primary-dark); font-weight: 600; }
+        a { text-decoration: none; color: inherit; transition: var(--transition); }
+        ul { list-style: none; }
+
+        .container { max-width: var(--container-width); margin: 0 auto; padding: 0 24px; }
+        section { padding: 80px 0; border-bottom: 1px solid rgba(0,0,0,0.03); }
+        
+        .section-header { text-align: center; max-width: 800px; margin: 0 auto 50px; }
+        .section-title {
+            font-size: 2.2rem; margin-bottom: 12px;
+            background: linear-gradient(90deg, var(--primary-dark), var(--brand-blue));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: inline-block;
+        }
+        .section-subtitle { font-size: 1rem; opacity: 0.8; }
+        
+        /* Category Header for subsections */
+        .cat-header {
+            font-size: 1.4rem; color: var(--primary-dark); margin: 40px 0 20px; 
+            display: flex; align-items: center; gap: 10px;
+        }
+        .cat-header::before { content:''; width: 5px; height: 25px; background: var(--brand-blue); border-radius: 2px; }
+
+        /* --- CARDS --- */
+        .service-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+        .glass-card {
+            background: var(--glass-bg); backdrop-filter: blur(var(--blur-strength));
+            border: 1px solid var(--glass-border); border-radius: var(--card-radius); padding: 24px;
+            box-shadow: var(--glass-shadow); transition: var(--transition);
+            display: flex; flex-direction: column; position: relative; overflow: hidden; height: 100%;
+        }
+        .glass-card:hover { transform: translateY(-5px); background: rgba(255, 255, 255, 0.95); box-shadow: 0 15px 30px rgba(0,0,0,0.1); }
+        .glass-card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--brand-blue); opacity: 0; transition: var(--transition); }
+        .glass-card:hover::before { opacity: 1; }
+        
+        .card-icon {
+            font-size: 1.8rem; color: var(--brand-blue); margin-bottom: 15px; width: 50px; height: 50px;
+            background: rgba(59, 130, 246, 0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; transition: var(--transition);
+        }
+        .glass-card:hover .card-icon { background: var(--brand-blue); color: white; transform: rotateY(180deg); }
+        .card-title { font-size: 1.15rem; margin-bottom: 8px; line-height: 1.3; }
+        .card-desc { font-size: 0.85rem; color: #64748b; margin-bottom: 20px; flex-grow: 1; }
+        
+        .wa-btn {
+            display: flex; align-items: center; justify-content: center; gap: 8px; padding: 10px;
+            background: var(--brand-green); color: white; border-radius: 50px; font-weight: 600; font-size: 0.9rem; margin-top: auto;
+        }
+        .wa-btn:hover { background: var(--brand-green-hover); box-shadow: 0 4px 12px rgba(37,211,102,0.4); }
+
+        /* --- NAVBAR --- */
+        .navbar {
+            position: fixed; top: 0; width: 100%; z-index: 1000; background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px); border-bottom: 1px solid rgba(0,0,0,0.05); padding: 16px 0; transition: var(--transition);
+        }
+        .nav-container { display: flex; justify-content: space-between; align-items: center; }
+        .logo { font-size: 1.4rem; font-weight: 700; color: var(--primary-dark); display: flex; align-items: center; gap: 10px; }
+        .nav-links { display: flex; gap: 20px; }
+        .nav-link { font-weight: 500; font-size: 0.85rem; position: relative; }
+        .nav-link:hover, .nav-link.active { color: var(--brand-blue); }
+
+        /* --- ANIMATIONS --- */
+        .click-ripple {
+            position: fixed; border-radius: 50%; transform: scale(0);
+            background: radial-gradient(circle, rgba(59,130,246,0.6) 0%, rgba(59,130,246,0) 70%);
+            pointer-events: none; z-index: 9999; animation: ripple-effect 0.6s linear;
+        }
+        @keyframes ripple-effect { to { transform: scale(4); opacity: 0; } }
+
+        /* Stick Man Animation CSS (Same as before) */
+        .story-container { width: 320px; height: 220px; margin: 0 auto 30px; position: relative; }
+        svg { width: 100%; height: 100%; overflow: visible; }
+        .stick-stroke { stroke: var(--primary-dark); stroke-width: 4; fill: none; stroke-linecap: round; stroke-linejoin: round; }
+        #head { animation: head-tilt 8s infinite; transform-origin: 160px 80px; }
+        @keyframes head-tilt { 0%, 20% { transform: rotate(-10deg); } 25%, 100% { transform: rotate(0deg); } }
+        #arm-left { animation: arm-l-action 8s infinite; transform-origin: 160px 110px; }
+        #arm-right { animation: arm-r-action 8s infinite; transform-origin: 160px 110px; }
+        @keyframes arm-l-action { 0%, 20% { transform: rotate(-130deg); } 25%, 30% { transform: rotate(0deg); } 35%, 60% { transform: rotate(-40deg) translateX(5px); } 65%, 100% { transform: rotate(-140deg); } }
+        @keyframes arm-r-action { 0%, 20% { transform: rotate(20deg); } 25%, 30% { transform: rotate(0deg); } 35%, 60% { transform: rotate(40deg) translateX(-5px); } 65%, 100% { transform: rotate(140deg); } }
+        #questions { opacity: 0; animation: fade-qs 8s infinite; }
+        @keyframes fade-qs { 0%, 20% { opacity: 1; transform: translateY(-5px); } 25%, 100% { opacity: 0; } }
+        #bulb { opacity: 0; transform-origin: 190px 40px; animation: pop-bulb 8s infinite; }
+        @keyframes pop-bulb { 0%, 20% { opacity: 0; transform: scale(0); } 22%, 32% { opacity: 1; transform: scale(1.2); } 35%, 100% { opacity: 0; transform: scale(0); } }
+        #laptop { opacity: 0; animation: show-laptop 8s infinite; }
+        @keyframes show-laptop { 0%, 30% { opacity: 0; transform: translateY(20px); } 35%, 60% { opacity: 1; transform: translateY(0); } 65%, 100% { opacity: 0; transform: translateY(20px); } }
+        #chart { opacity: 0; stroke-dasharray: 100; stroke-dashoffset: 100; animation: draw-chart 8s infinite; }
+        @keyframes draw-chart { 0%, 60% { opacity: 0; stroke-dashoffset: 100; } 65% { opacity: 1; } 70%, 100% { opacity: 1; stroke-dashoffset: 0; } }
+        #smile { opacity: 0; animation: show-smile 8s infinite; }
+        @keyframes show-smile { 0%, 60% { opacity: 0; } 65%, 100% { opacity: 1; } }
+        #man-body { animation: jump-joy 8s infinite; transform-origin: bottom center; }
+        @keyframes jump-joy { 0%, 60% { transform: translateY(0); } 65%, 75%, 85% { transform: translateY(-10px); } 70%, 80%, 100% { transform: translateY(0); } }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) {
+            .nav-links { display: none; }
+            .section-title { font-size: 1.8rem; }
+            .container { padding: 0 16px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="navbar" id="navbar">
+        <div class="container nav-container">
+            <a href="#" class="logo">
+                <i class="fa-solid fa-shield-halved" style="color: var(--brand-blue);"></i> 
+                <span>Sri Raksha</span>
+            </a>
+            <ul class="nav-links">
+                <li><a href="#registration" class="nav-link">Registration</a></li>
+                <li><a href="#company" class="nav-link">Company</a></li>
+                <li><a href="#gst" class="nav-link">GST</a></li>
+                <li><a href="#itr" class="nav-link">ITR & DSC</a></li>
+                <li><a href="#finance" class="nav-link">Finance</a></li>
+                <li><a href="#creative" class="nav-link">Creative</a></li>
+            </ul>
+            <a href="https://wa.me/919980127592?text=Hey%20I%20want%20to%20enquire%20about%20services%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn" style="width: auto; padding: 8px 20px; background: var(--primary-dark);">
+                <i class="fa-solid fa-phone"></i> Contact
+            </a>
+        </div>
+    </nav>
+
+    <header style="padding-top: 120px; padding-bottom: 80px; text-align: center; position: relative;">
+        <div class="container">
+            
+            <div class="story-container" data-aos="zoom-in" data-aos-duration="1000">
+                <svg viewBox="0 0 320 220">
+                    <line x1="40" y1="200" x2="280" y2="200" stroke="#cbd5e1" stroke-width="2" />
+                    <g id="questions">
+                        <text x="100" y="60" font-family="sans-serif" font-size="24" fill="#ef4444" font-weight="bold">?</text>
+                        <text x="210" y="50" font-family="sans-serif" font-size="20" fill="#ef4444" font-weight="bold">?</text>
+                    </g>
+                    <g id="bulb">
+                        <circle cx="210" cy="50" r="10" fill="#f59e0b" />
+                        <line x1="210" y1="65" x2="210" y2="75" stroke="#f59e0b" stroke-width="2" />
+                        <line x1="195" y1="40" x2="185" y2="35" stroke="#f59e0b" stroke-width="2" />
+                        <line x1="225" y1="40" x2="235" y2="35" stroke="#f59e0b" stroke-width="2" />
+                        <line x1="210" y1="35" x2="210" y2="25" stroke="#f59e0b" stroke-width="2" />
+                    </g>
+                    <path id="chart" d="M220 180 L230 180 L240 160 L250 170 L270 130" stroke="#22c55e" stroke-width="4" fill="none" stroke-linecap="round" stroke-linejoin="round" />
+                    <g id="man-body">
+                        <line x1="160" y1="160" x2="140" y2="200" class="stick-stroke" />
+                        <line x1="160" y1="160" x2="180" y2="200" class="stick-stroke" />
+                        <line x1="160" y1="160" x2="160" y2="80" class="stick-stroke" />
+                        <g id="head">
+                            <circle cx="160" cy="65" r="15" class="stick-stroke" fill="white" />
+                            <path id="smile" d="M155 65 Q160 72 165 65" stroke="#0f172a" stroke-width="2" fill="none" />
+                        </g>
+                        <line id="arm-left" x1="160" y1="90" x2="140" y2="130" class="stick-stroke" />
+                        <line id="arm-right" x1="160" y1="90" x2="180" y2="130" class="stick-stroke" />
+                    </g>
+                    <g id="laptop">
+                        <rect x="130" y="140" width="60" height="40" rx="4" fill="#3b82f6" />
+                        <path d="M120 180 L200 180 L210 190 L110 190 Z" fill="#1e293b" />
+                        <rect x="140" y="150" width="40" height="20" fill="#e2e8f0" rx="2" />
+                    </g>
+                </svg>
+            </div>
+
+            <span style="background: rgba(59,130,246,0.1); color: var(--brand-blue); padding: 6px 16px; border-radius: 20px; font-weight: 600; font-size: 0.9rem;" data-aos="fade-up">
+                <i class="fa-solid fa-check"></i> From Confusion to Compliance
+            </span>
+            
+            <h1 style="font-size: 3rem; margin: 20px 0; line-height: 1.2;" data-aos="fade-up" data-aos-delay="100">
+                Complete Digital Service <br> <span style="color: var(--brand-blue);">at your door step</span>
+            </h1>
+
+            <p style="color: #64748b; font-size: 1.1rem; max-width: 600px; margin: 0 auto 30px;" data-aos="fade-up" data-aos-delay="200">
+                Your one-stop destination for Business Registration, Tax Compliance, Financial Services, and Digital Growth.
+            </p>
+            <div style="display: flex; justify-content: center; gap: 16px;" data-aos="fade-up" data-aos-delay="300">
+                <a href="#registration" style="background: var(--primary-dark); color: white; padding: 14px 28px; border-radius: 50px; font-weight: 600;">Get Started</a>
+                <a href="https://wa.me/919980127592?text=Hey%20I%20want%20to%20enquire%20about%20services%20from%20Sri%20Raksha%20Digital%20Service" style="background: white; border: 1px solid #e2e8f0; color: var(--primary-dark); padding: 14px 28px; border-radius: 50px; font-weight: 600;">
+                    <i class="fa-brands fa-whatsapp" style="color: var(--brand-green);"></i> Chat Now
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <section id="registration">
+        <div class="container">
+            <div class="section-header" data-aos="fade-down">
+                <h2 class="section-title">Business Registration</h2>
+                <p class="section-subtitle">Legalize your business with our quick registration services.</p>
+            </div>
+            
+            <div class="service-grid">
+                <div class="glass-card" data-aos="fade-up">
+                    <div class="card-icon"><i class="fa-solid fa-file-contract"></i></div>
+                    <h3 class="card-title">GST Registration</h3>
+                    <p class="card-desc">Proprietorship, Company, Partnership/LLP Firm.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20GST%20Registration%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Chat on WhatsApp</a>
+                </div>
+                <div class="glass-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card-icon"><i class="fa-solid fa-user-tie"></i></div>
+                    <h3 class="card-title">Proprietorship</h3>
+                    <p class="card-desc">Sole Proprietorship Registration.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20Proprietorship%20Registration%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Chat on WhatsApp</a>
+                </div>
+                <div class="glass-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="card-icon"><i class="fa-solid fa-handshake"></i></div>
+                    <h3 class="card-title">Partnership</h3>
+                    <p class="card-desc">Partnership Firm Registration.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20Partnership%20Registration%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Chat on WhatsApp</a>
+                </div>
+                <div class="glass-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="card-icon"><i class="fa-solid fa-ship"></i></div>
+                    <h3 class="card-title">IEC Code</h3>
+                    <p class="card-desc">Import Export Code Registration.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20IEC%20Registration%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Chat on WhatsApp</a>
+                </div>
+                <div class="glass-card" data-aos="fade-up">
+                    <div class="card-icon"><i class="fa-solid fa-store"></i></div>
+                    <h3 class="card-title">Shops & Est.</h3>
+                    <p class="card-desc">Shops & Establishments Registration.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20Shops%20and%20Establishment%20Registration%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Chat on WhatsApp</a>
+                </div>
+                <div class="glass-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card-icon"><i class="fa-solid fa-industry"></i></div>
+                    <h3 class="card-title">MSME / Udyam</h3>
+                    <p class="card-desc">Udyam Registration for small businesses.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20MSME%20Udyam%20Registration%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Chat on WhatsApp</a>
+                </div>
+                <div class="glass-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="card-icon"><i class="fa-solid fa-gavel"></i></div>
+                    <h3 class="card-title">GEM Registration</h3>
+                    <p class="card-desc">Government e-Marketplace Registration.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20GEM%20Registration%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Chat on WhatsApp</a>
+                </div>
+                <div class="glass-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="card-icon"><i class="fa-solid fa-utensils"></i></div>
+                    <h3 class="card-title">FSSAI</h3>
+                    <p class="card-desc">Basic Registration, State & Central License.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20FSSAI%20Registration%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Chat on WhatsApp</a>
+                </div>
+                <div class="glass-card" data-aos="fade-up">
+                    <div class="card-icon"><i class="fa-solid fa-certificate"></i></div>
+                    <h3 class="card-title">ISO Certification</h3>
+                    <p class="card-desc">ISO (With IAF / Without IAF).</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20ISO%20Certification%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Chat on WhatsApp</a>
+                </div>
+                <div class="glass-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card-icon"><i class="fa-solid fa-copyright"></i></div>
+                    <h3 class="card-title">Trademark</h3>
+                    <p class="card-desc">Registration, Objection, Hearing, Drafting.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20Trademark%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Chat on WhatsApp</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="company" style="background-color: #f8fafc;">
+        <div class="container">
+            <div class="section-header" data-aos="fade-right">
+                <h2 class="section-title">Company Formation</h2>
+                <p class="section-subtitle">Start your corporate journey with legal recognition.</p>
+            </div>
+
+            <div class="service-grid">
+                <div class="glass-card" data-aos="fade-up">
+                    <div class="card-icon"><i class="fa-solid fa-building"></i></div>
+                    <h3 class="card-title">Private Limited</h3>
+                    <p class="card-desc">Start Your Business with Legal Recognition!</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20Private%20Limited%20Registration%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Connect</a>
+                </div>
+                <div class="glass-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card-icon"><i class="fa-solid fa-users"></i></div>
+                    <h3 class="card-title">LLP Formation</h3>
+                    <p class="card-desc">Register Your Limited Liability Partnership Hassle-Free!</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20LLP%20Formation%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Connect</a>
+                </div>
+                <div class="glass-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="card-icon"><i class="fa-solid fa-user"></i></div>
+                    <h3 class="card-title">OPC Registration</h3>
+                    <p class="card-desc">Start Your Business as a One-Person Company!</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20OPC%20Registration%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Connect</a>
+                </div>
+                <div class="glass-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="card-icon"><i class="fa-solid fa-hand-holding-heart"></i></div>
+                    <h3 class="card-title">Section 8 Company</h3>
+                    <p class="card-desc">Start a Non-Profit Organization with Legal Recognition!</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20Section%208%20Registration%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Connect</a>
+                </div>
+            </div>
+            
+            <h3 class="cat-header">Company Compliance</h3>
+            <div class="service-grid">
+                 <div class="glass-card">
+                    <h4 class="card-title">Annual Compliance</h4>
+                    <p class="card-desc">ADT-01, KYC, ROC Filing.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20Company%20Annual%20Compliance%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Connect</a>
+                </div>
+                 <div class="glass-card">
+                    <h4 class="card-title">Other Compliance</h4>
+                    <p class="card-desc">MOA/AOA Amendment, Name Change, DIN Surrender.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20Company%20Other%20Compliance%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Connect</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="gst">
+        <div class="container">
+            <div class="section-header" data-aos="fade-left">
+                <h2 class="section-title">GST Returns</h2>
+                <p class="section-subtitle">Monthly, Quarterly, and Annual GST compliance.</p>
+            </div>
+
+            <div class="service-grid">
+                <div class="glass-card" data-aos="zoom-in-up">
+                    <div class="card-icon"><i class="fa-solid fa-receipt"></i></div>
+                    <h3 class="card-title">Regular Taxpayer</h3>
+                    <p class="card-desc">Invoice, NIL Returns, E-commerce.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20Regular%20GST%20Return%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Chat on WhatsApp</a>
+                </div>
+                <div class="glass-card" data-aos="zoom-in-up" data-aos-delay="100">
+                    <div class="card-icon"><i class="fa-solid fa-clock"></i></div>
+                    <h3 class="card-title">QRMP Scheme</h3>
+                    <p class="card-desc">Selling through E-commerce, With Invoice.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20QRMP%20Scheme%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Chat on WhatsApp</a>
+                </div>
+                <div class="glass-card" data-aos="zoom-in-up" data-aos-delay="200">
+                    <div class="card-icon"><i class="fa-solid fa-percent"></i></div>
+                    <h3 class="card-title">Composition</h3>
+                    <p class="card-desc">NIL Returns, With Invoice.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20Composition%20Scheme%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Chat on WhatsApp</a>
+                </div>
+                <div class="glass-card" data-aos="zoom-in-up">
+                    <div class="card-icon"><i class="fa-solid fa-book"></i></div>
+                    <h3 class="card-title">Annual Filing</h3>
+                    <p class="card-desc">Regular/Composition, Reconciliation (>2Cr).</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20GST%20Annual%20Filing%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Chat on WhatsApp</a>
+                </div>
+                <div class="glass-card" data-aos="zoom-in-up" data-aos-delay="100">
+                    <div class="card-icon"><i class="fa-solid fa-globe"></i></div>
+                    <h3 class="card-title">Non-Resident</h3>
+                    <p class="card-desc">GST Compliance for Non-Residents.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20Non-Resident%20GST%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Chat on WhatsApp</a>
+                </div>
+                <div class="glass-card" data-aos="zoom-in-up" data-aos-delay="200">
+                    <div class="card-icon"><i class="fa-solid fa-network-wired"></i></div>
+                    <h3 class="card-title">ISD Returns</h3>
+                    <p class="card-desc">Compliance for Input Service Distributors.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20ISD%20Returns%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Chat on WhatsApp</a>
+                </div>
+                <div class="glass-card" data-aos="zoom-in-up">
+                    <div class="card-icon"><i class="fa-solid fa-money-check-dollar"></i></div>
+                    <h3 class="card-title">TDS Returns</h3>
+                    <p class="card-desc">Comprehensive TDS Compliance.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20GST%20TDS%20Return%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Chat on WhatsApp</a>
+                </div>
+                <div class="glass-card" data-aos="zoom-in-up" data-aos-delay="100">
+                    <div class="card-icon"><i class="fa-solid fa-cart-shopping"></i></div>
+                    <h3 class="card-title">E-commerce</h3>
+                    <p class="card-desc">Simplified compliance for Operators.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20Ecommerce%20GST%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Chat on WhatsApp</a>
+                </div>
+                 <div class="glass-card" data-aos="zoom-in-up" data-aos-delay="200">
+                    <div class="card-icon"><i class="fa-solid fa-ban"></i></div>
+                    <h3 class="card-title">Final Returns</h3>
+                    <p class="card-desc">Hassle-Free Filing for Cancelled Reg.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20Final%20GST%20Return%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Chat on WhatsApp</a>
+                </div>
+                 <div class="glass-card" data-aos="zoom-in-up">
+                    <div class="card-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+                    <h3 class="card-title">Other Compliance</h3>
+                    <p class="card-desc">Refund, Appeal, Surrender, DRC-03.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20GST%20Other%20Compliance%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Chat on WhatsApp</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="itr" style="background-color: #f8fafc;">
+        <div class="container">
+            <div class="section-header" data-aos="fade-down">
+                <h2 class="section-title">ITR & Digital Signature</h2>
+                <p class="section-subtitle">Income Tax Returns and Digital Signature Certificates.</p>
+            </div>
+
+            <h3 class="cat-header">Income Tax Return</h3>
+            <div class="service-grid">
+                <div class="glass-card">
+                    <h4 class="card-title">ITR - 5</h4>
+                    <p class="card-desc">Hassle-Free Tax Filing for Firms & LLPs.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20ITR-5%20Filing%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">File Now</a>
+                </div>
+                <div class="glass-card">
+                    <h4 class="card-title">ITR - U (22-23)</h4>
+                    <p class="card-desc">File ITR-U for FY 22-23.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20ITR-U%2022-23%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">File Now</a>
+                </div>
+                <div class="glass-card">
+                    <h4 class="card-title">ITR - U (23-24)</h4>
+                    <p class="card-desc">Correct & Update Past Returns.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20ITR-U%2023-24%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">File Now</a>
+                </div>
+                <div class="glass-card">
+                    <h4 class="card-title">ITR - U (24-25)</h4>
+                    <p class="card-desc">Correct Past Returns with Ease.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20ITR-U%2024-25%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">File Now</a>
+                </div>
+                <div class="glass-card">
+                    <h4 class="card-title">CA Certification</h4>
+                    <p class="card-desc">Secure, Verified & Hassle-Free.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20CA%20Certification%20of%20ITR%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Get Certified</a>
+                </div>
+                <div class="glass-card">
+                    <h4 class="card-title">ITR 10 E</h4>
+                    <p class="card-desc">Relief Under Section 89(1).</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20ITR%2010E%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">File Now</a>
+                </div>
+                <div class="glass-card">
+                    <h4 class="card-title">Notice Response</h4>
+                    <p class="card-desc">Expert Assistance for Notices.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20ITR%20Notice%20Response%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Get Help</a>
+                </div>
+                <div class="glass-card">
+                    <h4 class="card-title">ITR Correction</h4>
+                    <p class="card-desc">Hassle-Free ITR Correction Service.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20ITR%20Correction%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Correct Now</a>
+                </div>
+                <div class="glass-card">
+                    <h4 class="card-title">Advance Tax</h4>
+                    <p class="card-desc">Stay Compliant & Avoid Penalties.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20Advance%20Tax%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Pay Now</a>
+                </div>
+                <div class="glass-card">
+                    <h4 class="card-title">TDS Return</h4>
+                    <p class="card-desc">Ensure Compliance & Avoid Penalties.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20TDS%20Return%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">File Now</a>
+                </div>
+                <div class="glass-card">
+                    <h4 class="card-title">TAN Registration</h4>
+                    <p class="card-desc">Get Tax Deduction Account Number.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20TAN%20Registration%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Register</a>
+                </div>
+                <div class="glass-card">
+                    <h4 class="card-title">Challan</h4>
+                    <p class="card-desc">TDS Challan Submission.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20Challan%20Submission%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Submit</a>
+                </div>
+                <div class="glass-card">
+                    <h4 class="card-title">PAN-Aadhaar Link</h4>
+                    <p class="card-desc">Avoid Penalties & Stay Compliant.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20PAN-Aadhaar%20Link%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Link Now</a>
+                </div>
+            </div>
+
+            <h3 class="cat-header">DSC (Digital Signature)</h3>
+            <div class="service-grid">
+                <div class="glass-card">
+                    <h4 class="card-title">DSC Class 3 Ind</h4>
+                    <p class="card-desc">Secure Your Digital Identity!</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20DSC%20Class%203%20Individual%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Buy Now</a>
+                </div>
+                <div class="glass-card">
+                    <h4 class="card-title">DSC Class 3 Combo</h4>
+                    <p class="card-desc">Comprehensive Digital Solution!</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20DSC%20Class%203%20Combo%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Buy Now</a>
+                </div>
+                 <div class="glass-card">
+                    <h4 class="card-title">DSC Govt. Combo</h4>
+                    <p class="card-desc">For Government Applications!</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20DSC%20Govt%20Combo%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Buy Now</a>
+                </div>
+                <div class="glass-card">
+                    <h4 class="card-title">DSC Org</h4>
+                    <p class="card-desc">For Business Compliance!</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20DSC%20Organization%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Buy Now</a>
+                </div>
+                <div class="glass-card">
+                    <h4 class="card-title">DSC Org Combo</h4>
+                    <p class="card-desc">Advanced Corporate Security!</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20DSC%20Organization%20Combo%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Buy Now</a>
+                </div>
+                <div class="glass-card">
+                    <h4 class="card-title">DSC IET (DGFT)</h4>
+                    <p class="card-desc">Simplify Import/Export!</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20DSC%20DGFT%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Buy Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="finance">
+        <div class="container">
+            <div class="section-header" data-aos="fade-right">
+                <h2 class="section-title">Accounting & Finance</h2>
+                <p class="section-subtitle">Financial management and banking solutions.</p>
+            </div>
+            
+            <div class="service-grid">
+                <div class="glass-card" data-aos="fade-up">
+                    <div class="card-icon"><i class="fa-solid fa-calculator"></i></div>
+                    <h3 class="card-title">Accounting</h3>
+                    <p class="card-desc">Monthly/Yearly (Up to 1Cr).</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20Accounting%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Enquire</a>
+                </div>
+                <div class="glass-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card-icon"><i class="fa-solid fa-file-invoice-dollar"></i></div>
+                    <h3 class="card-title">CMA Report</h3>
+                    <p class="card-desc">For Loans & Funding.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20CMA%20Report%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Enquire</a>
+                </div>
+                <div class="glass-card" data-aos="fade-up" data-aos-delay="200">
+                    <div class="card-icon"><i class="fa-solid fa-scale-unbalanced-flip"></i></div>
+                    <h3 class="card-title">Balance Sheet</h3>
+                    <p class="card-desc">Project & CA Certified Balance Sheet.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20Balance%20Sheet%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Enquire</a>
+                </div>
+                <div class="glass-card" data-aos="fade-up" data-aos-delay="300">
+                    <div class="card-icon"><i class="fa-solid fa-credit-card"></i></div>
+                    <h3 class="card-title">Credit Card</h3>
+                    <p class="card-desc">Find Best Cards & Apply Online.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20Credit%20Card%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Apply Now</a>
+                </div>
+                <div class="glass-card" data-aos="fade-up">
+                    <div class="card-icon"><i class="fa-solid fa-sack-dollar"></i></div>
+                    <h3 class="card-title">Personal Loan</h3>
+                    <p class="card-desc">Instant Approval & Low Rates.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20Personal%20Loan%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Apply Now</a>
+                </div>
+                <div class="glass-card" data-aos="fade-up" data-aos-delay="100">
+                    <div class="card-icon"><i class="fa-solid fa-piggy-bank"></i></div>
+                    <h3 class="card-title">Saving Account</h3>
+                    <p class="card-desc">Instant Account Opening.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20Saving%20Account%20Opening%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Open Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="creative" style="background-color: #f8fafc;">
+        <div class="container">
+            <div class="section-header" data-aos="fade-left">
+                <h2 class="section-title">Creative & Web</h2>
+                <p class="section-subtitle">Design, Marketing, and Development Services.</p>
+            </div>
+            
+            <div class="service-grid">
+                <div class="glass-card">
+                    <div class="card-icon"><i class="fa-solid fa-id-card"></i></div>
+                    <h3 class="card-title">Visiting Card</h3>
+                    <p class="card-desc">Print-ready files & source files.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20Visiting%20Card%20Design%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Get Design</a>
+                </div>
+                <div class="glass-card">
+                    <div class="card-icon"><i class="fa-solid fa-folder-open"></i></div>
+                    <h3 class="card-title">Brochure</h3>
+                    <p class="card-desc">Brochure, flyer, or standee designs.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20Brochure%20Design%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Get Design</a>
+                </div>
+                <div class="glass-card">
+                    <div class="card-icon"><i class="fa-solid fa-paper-plane"></i></div>
+                    <h3 class="card-title">Pamphlet</h3>
+                    <p class="card-desc">Professional pamphlet design.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20Pamphlet%20Design%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Get Design</a>
+                </div>
+                <div class="glass-card">
+                    <div class="card-icon"><i class="fa-solid fa-pen-nib"></i></div>
+                    <h3 class="card-title">Logo Design</h3>
+                    <p class="card-desc">Minimalist high-end design.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20Logo%20Design%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Get Design</a>
+                </div>
+                <div class="glass-card">
+                    <div class="card-icon"><i class="fa-brands fa-google"></i></div>
+                    <h3 class="card-title">Google Listing</h3>
+                    <p class="card-desc">Setup and Optimization.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20Google%20Listing%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Boost Now</a>
+                </div>
+                <div class="glass-card">
+                    <div class="card-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+                    <h3 class="card-title">City SEO</h3>
+                    <p class="card-desc">City-wise SEO Promotion.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20City%20SEO%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Boost Now</a>
+                </div>
+                <div class="glass-card">
+                    <div class="card-icon"><i class="fa-solid fa-bullhorn"></i></div>
+                    <h3 class="card-title">Google Ads</h3>
+                    <p class="card-desc">Expert Ad Setup & Management.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20Google%20Ads%20Setup%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Start Ads</a>
+                </div>
+                <div class="glass-card">
+                    <div class="card-icon"><i class="fa-brands fa-facebook"></i></div>
+                    <h3 class="card-title">Facebook Ads</h3>
+                    <p class="card-desc">Targeted Audience Analysis.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20Facebook%20Ads%20Setup%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Start Ads</a>
+                </div>
+                <div class="glass-card">
+                    <div class="card-icon"><i class="fa-solid fa-share-nodes"></i></div>
+                    <h3 class="card-title">Social Media</h3>
+                    <p class="card-desc">Profile Creation (4 Platforms).</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20Social%20Media%20Pages%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Create Now</a>
+                </div>
+                <div class="glass-card">
+                    <div class="card-icon"><i class="fa-solid fa-list"></i></div>
+                    <h3 class="card-title">Local Listing</h3>
+                    <p class="card-desc">Listing in 10 Local Websites.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20Local%20Listing%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">List Now</a>
+                </div>
+                <div class="glass-card">
+                    <div class="card-icon"><i class="fa-solid fa-cart-plus"></i></div>
+                    <h3 class="card-title">E-Commerce Web</h3>
+                    <p class="card-desc">Globally accessible store.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20Ecommerce%20Website%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Build Now</a>
+                </div>
+                <div class="glass-card">
+                    <div class="card-icon"><i class="fa-solid fa-laptop-code"></i></div>
+                    <h3 class="card-title">5 Page Website</h3>
+                    <p class="card-desc">Professional business website.</p>
+                    <a href="https://wa.me/919980127592?text=Hey%20I%20want%205%20Page%20Website%20service%20from%20Sri%20Raksha%20Digital%20Service" class="wa-btn">Build Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer style="background: var(--primary-dark); color: white; padding: 60px 0 20px;">
+        <div class="container">
+            <div style="text-align: center; opacity: 0.6; font-size: 0.9rem;">
+                &copy; 2025 Sri Raksha Digital Service. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <a href="https://wa.me/919980127592?text=Hey%20I%20want%20to%20enquire%20about%20services%20from%20Sri%20Raksha%20Digital%20Service" target="_blank" style="position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px; background: var(--brand-green); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 30px; box-shadow: 0 4px 10px rgba(0,0,0,0.3); z-index: 2000;">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ offset: 80, duration: 800, once: true });
+
+        window.addEventListener('scroll', function() {
+            const navbar = document.getElementById('navbar');
+            navbar.style.background = window.scrollY > 50 ? 'rgba(255, 255, 255, 0.98)' : 'rgba(255, 255, 255, 0.9)';
+            navbar.style.boxShadow = window.scrollY > 50 ? '0 2px 10px rgba(0,0,0,0.1)' : 'none';
+        });
+
+        document.addEventListener('click', function(e) {
+            const ripple = document.createElement('div');
+            ripple.classList.add('click-ripple');
+            const size = 50; 
+            ripple.style.width = size + 'px';
+            ripple.style.height = size + 'px';
+            ripple.style.left = (e.clientX - size/2) + 'px';
+            ripple.style.top = (e.clientY - size/2) + 'px';
+            document.body.appendChild(ripple);
+            setTimeout(() => { ripple.remove(); }, 600);
+        });
+    </script>
+</body>
+</html>
